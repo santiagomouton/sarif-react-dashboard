@@ -49,12 +49,16 @@ jobs:
           mkdir -p ${{ env.RESULT_FOLDER }}
           codeql database analyze $HOME/codeql-home/tesis-sec-db ${{ env.COREQL_SUITES_PATH }}/cpp-code-scanning.qls --format=sarifv2.1.0 \
           --output=${{ env.RESULT_FOLDER }}/cpp-code-scanning.sarif
-          cat codeql_results/cpp-code-scanning.sarif
           
           codeql database analyze $HOME/codeql-home/tesis-sec-db ${{ env.COREQL_SUITES_PATH }}/cpp-security-extended.qls --format=sarifv2.1.0 \
           --output=${{ env.RESULT_FOLDER }}/cpp-security-extended.sarif
-          cat codeql_results/cpp-security-extended.sarif
 
           codeql database analyze $HOME/codeql-home/tesis-sec-db ${{ env.COREQL_SUITES_PATH }}/cpp-security-and-quality.qls --format=sarifv2.1.0 \
           --output=${{ env.RESULT_FOLDER }}/cpp-security-and-quality.sarif
           cat codeql_results/cpp-security-and-quality.sarif
+
+      # Uploads results.sarif to GitHub repository using the upload-sarif action
+      - uses: github/codeql-action/upload-sarif@v3
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: codeql_results/cpp-code-scanning.sarif
