@@ -1,0 +1,1 @@
+docker run -ti --rm -v /home/sant/tesis/sarif-react-dashboard:/app -w /app -p 3000:3000 node:latest bash

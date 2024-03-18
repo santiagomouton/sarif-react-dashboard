@@ -1,0 +1,60 @@
+name: Execute static codeql analisis
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'main/*'
+      - 'components/*'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  codeql:
+    name: codeql-analisis
+    runs-on: codeql-runner
+    env:
+      CODEQL_CLI_VERSION: 2.16.0
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Download and set up codeql-cli
+        env:
+          CODEQL_DOWNLOAD_URL: https://github.com/github/codeql-action/releases/download/codeql-bundle-v${{ env.CODEQL_CLI_VERSION }}/codeql-bundle-linux64.tar.gz
+        run: |
+          mkdir -p $HOME/codeql-home
+          curl -sSLo $HOME/codeql-home/codeql.tar.gz ${{ env.CODEQL_DOWNLOAD_URL }} 
+          tar -xf $HOME/codeql-home/codeql.tar.gz -C $HOME/codeql-home/ && chmod -R 777 $HOME/codeql-home/
+          echo "$HOME/codeql-home/codeql" >> $GITHUB_PATH
+      - name: Check config
+        run: |
+          cd $HOME/codeql-home/
+          codeql resolve languages
+          codeql resolve qlpacks
+      - name: Generate makefile
+        run: |
+          . $IDF_PATH/export.sh
+          cmake -S . -B ./build
+      - name: Create Codeql database
+        run: |
+          cd ./build
+          . $IDF_PATH/export.sh
+          codeql database create $HOME/codeql-home/tesis-sec-db --language=cpp --command=make --overwrite
+      - name: Query the codeql database
+        env:
+          COREQL_SUITES_PATH: $HOME/codeql-home/codeql/qlpacks/codeql/cpp-queries/0.9.2/codeql-suites
+          RESULT_FOLDER: codeql_results
+        run: |
+          mkdir -p ${{ env.RESULT_FOLDER }}
+          codeql database analyze $HOME/codeql-home/tesis-sec-db ${{ env.COREQL_SUITES_PATH }}/cpp-code-scanning.qls --format=sarifv2.1.0 \
+          --output=${{ env.RESULT_FOLDER }}/cpp-code-scanning.sarif
+          cat codeql_results/cpp-code-scanning.sarif
+          
+          codeql database analyze $HOME/codeql-home/tesis-sec-db ${{ env.COREQL_SUITES_PATH }}/cpp-security-extended.qls --format=sarifv2.1.0 \
+          --output=${{ env.RESULT_FOLDER }}/cpp-security-extended.sarif
+          cat codeql_results/cpp-security-extended.sarif
+
+          codeql database analyze $HOME/codeql-home/tesis-sec-db ${{ env.COREQL_SUITES_PATH }}/cpp-security-and-quality.qls --format=sarifv2.1.0 \
+          --output=${{ env.RESULT_FOLDER }}/cpp-security-and-quality.sarif
+          cat codeql_results/cpp-security-and-quality.sarif
