@@ -11,6 +11,8 @@ on:
 
 jobs:
   codeql:
+    permissions: write-all
+    security-events: write
     name: codeql-analisis
     runs-on: codeql-runner
     env:
