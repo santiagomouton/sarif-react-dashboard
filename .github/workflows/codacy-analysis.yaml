@@ -14,7 +14,7 @@ on:
 jobs:
   codacy-analysis-cli:
     name: Codacy Analysis CLI
-    runs-on: codacy-runner
+    runs-on: analysis-runner
     steps:
       - name: Checkout code
         uses: actions/checkout@main
