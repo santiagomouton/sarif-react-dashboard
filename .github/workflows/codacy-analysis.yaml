@@ -25,7 +25,7 @@ jobs:
           #tool: <CLIENT_SIDE_TOOL_NAME>
           api-token: ${{ secrets.CODACY_API_TOKEN }}
           upload: true
-          directory: code/main/
+          directory: ${{ GITHUB_WORKSPACE }}code/main/
           max-allowed-issues: 2147483647
           verbose: false
           #clang-tidy-output: 
