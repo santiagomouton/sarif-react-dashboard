@@ -53,7 +53,7 @@
 
   //****************************************
 
-    //compiler optimization for tflite-micro-esp-examples
+    //compiler optimization for esp-tflite-micro
     #define XTENSA
     //#define CONFIG_IDF_TARGET_ARCH_XTENSA     //not needed with platformio/espressif32 @ 5.2.0
 
@@ -66,6 +66,7 @@
     #define FLASH_GPIO GPIO_NUM_4               // PIN for flashlight LED
     #define USE_PWM_LEDFLASH                    // if __LEDGLOBAL is defined, a global variable is used for LED control, otherwise locally and each time a new
     #define CAM_LIVESTREAM_REFRESHRATE 500      // Camera livestream feature: Waiting time in milliseconds to refresh image
+    // #define GRAYSCALE_AS_DEFAULT
 
 
     //ClassControllCamera + ClassFlowTakeImage
@@ -165,15 +166,6 @@
     #define LWT_TOPIC        "connection"
     #define LWT_CONNECTED    "connected"
     #define LWT_DISCONNECTED "connection lost"
-
-
-    //CTfLiteClass
-    #define TFLITE_MINIMAL_CHECK(x)                              \
-        if (!(x)) {                                                \
-            fprintf(stderr, "Error at %s:%d\n", __FILE__, __LINE__); \
-            exit(1);                                                 \
-        }
-    // #define SUPRESS_TFLITE_ERRORS // use, to avoid error messages from TFLITE
 
 
     // connect_wlan.cpp

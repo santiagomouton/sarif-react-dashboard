@@ -1,2 +1,0 @@
-Development-Branch: project-code (Commit: 1d11497+)
-1d11497
