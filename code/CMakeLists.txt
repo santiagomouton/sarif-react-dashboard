@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16.0)
 
-list(APPEND EXTRA_COMPONENT_DIRS $ENV{IDF_PATH}/examples/common_components/protocol_examples_common components/esp-tflite-micro components/jomjol_helper)
+list(APPEND EXTRA_COMPONENT_DIRS $ENV{IDF_PATH}/examples/common_components/protocol_examples_common components/jomjol_helper)# /home/sant/.platformio/packages/framework-espidf/components)# components/esp-tflite-micro )
+#set(EXTRA_COMPONENT_DIRS components)
 
 #set(COMPONENT_DIRS $ENV{IDF_PATH}/components components components/esp-tflite-micro)
 #set(CMAKE_CURRENT_LIST_DIR /home/sant/tesis/tesis-code-analisys/code/main)
@@ -33,6 +34,7 @@ endif()
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
 idf_build_set_property(CXX_COMPILE_OPTIONS "-fpermissive" APPEND)
+idf_build_set_property(CXX_COMPILE_OPTIONS "--warn-no-overloaded-virtual" APPEND)
 #component_compile_options("-fpermissive")
 
 project(AI-on-the-edge)
