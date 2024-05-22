@@ -30,9 +30,9 @@
 #include "configFile.h"
 #include "server_main.h"
 #include "server_camera.h"
-#ifdef ENABLE_MQTT
+/* #ifdef ENABLE_MQTT
     #include "server_mqtt.h"
-#endif //ENABLE_MQTT
+#endif //ENABLE_MQTT */
 #include "Helper.h"
 #include "statusled.h"
 #include "sdcard_check.h"
@@ -120,11 +120,7 @@ bool Init_NVS_SDCard()
     // connected on the bus. This is for debug / example purpose only.
     slot_config.flags |= SDMMC_SLOT_FLAG_INTERNAL_PULLUP;
 
-    // Der PullUp des GPIO13 wird durch slot_config.flags |= SDMMC_SLOT_FLAG_INTERNAL_PULLUP;
-    // nicht gesetzt, da er eigentlich nicht benötigt wird, 
-    // dies führt jedoch bei schlechten Kopien des AI_THINKER Boards
-    // zu Problemen mit der SD Initialisierung und eventuell sogar zur reboot-loops.
-    // Um diese Probleme zu kompensieren, wird der PullUp manuel gesetzt.
+    // PULLUP manual en el pin13
     gpio_set_pull_mode(GPIO_NUM_13, GPIO_PULLUP_ONLY); // HS2_D3	
 
     // Options for mounting the filesystem.
@@ -350,8 +346,8 @@ extern "C" void app_main(void)
 
     // Check for updates
     // ********************************************
-    CheckOTAUpdate();
-    CheckUpdate();
+    //CheckOTAUpdate();
+    //CheckUpdate();
 
     // Start SoftAP for initial remote setup
     // Note: Start AP if no wlan.ini and/or config.ini available, e.g. SD card empty; function does not exit anymore until reboot
@@ -492,10 +488,12 @@ extern "C" void app_main(void)
     register_server_camera_uri(server); 
     register_server_main_flow_task_uri(server);
     register_server_file_uri(server, "/sdcard");
-    register_server_ota_sdcard_uri(server);
-    #ifdef ENABLE_MQTT
-        register_server_mqtt_uri(server);
-    #endif //ENABLE_MQTT
+
+    //register_server_ota_sdcard_uri(server);
+    
+    //#ifdef ENABLE_MQTT
+    //    register_server_mqtt_uri(server);
+    //#endif //ENABLE_MQTT
 
     gpio_handler_create(server);
 
@@ -635,6 +633,7 @@ void migrateConfiguration(void) {
             }
         }
 
+        /* QUEDA ACA PORQUE ES PARTE DEL SITIO WEB*/
         if (section == "[InfluxDB]") {
             /* Fieldname has a <NUMBER> as prefix! */
             if (isInString(configLines[i], "Fieldname")) { // It is the parameter "Fieldname"
@@ -652,6 +651,7 @@ void migrateConfiguration(void) {
                 migrated = migrated | replaceString(configLines[i], "Database", "Bucket"); // Rename it to Bucket
             }
         }
+        /* ---------------------------------------------- */
 
         if (section == "[GPIO]") {
 

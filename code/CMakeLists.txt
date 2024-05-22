@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16.0)
 
-list(APPEND EXTRA_COMPONENT_DIRS $ENV{IDF_PATH}/examples/common_components/protocol_examples_common components/jomjol_helper)# /home/sant/.platformio/packages/framework-espidf/components)# components/esp-tflite-micro )
+list(APPEND EXTRA_COMPONENT_DIRS $ENV{IDF_PATH}/examples/common_components/protocol_examples_common components/comp_helper)# /home/sant/.platformio/packages/framework-espidf/components)# components/esp-tflite-micro )
 #set(EXTRA_COMPONENT_DIRS components)
 
 #set(COMPONENT_DIRS $ENV{IDF_PATH}/components components components/esp-tflite-micro)

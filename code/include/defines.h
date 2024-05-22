@@ -135,13 +135,6 @@
     //ClassFlowControll: Serve alg_roi.jpg from memory as JPG
     #define ALGROI_LOAD_FROM_MEM_AS_JPG // Load ALG_ROI.JPG as rendered JPG from RAM
 
-
-    //ClassFlowMQTT
-    #define LWT_TOPIC        "connection"
-    #define LWT_CONNECTED    "connected"
-    #define LWT_DISCONNECTED "connection lost"
-
-
     //ClassFlowPostProcessing
     #define PREVALUE_TIME_FORMAT_OUTPUT "%Y-%m-%dT%H:%M:%S%z"
     #define PREVALUE_TIME_FORMAT_INPUT "%d-%d-%dT%d:%d:%d"
@@ -156,16 +149,6 @@
     //#define STB_IMAGE_WRITE_IMPLEMENTATION
     //#define STB_IMAGE_RESIZE_IMPLEMENTATION
     #define STBI_ONLY_JPEG // (save 2% of Flash, but breaks the alignment mark generation, see https://github.com/jomjol/AI-on-the-edge-device/issues/1721)
-
-
-    //interface_influxdb
-    #define MAX_HTTP_OUTPUT_BUFFER 2048
-
-
-    //server_mqtt
-    #define LWT_TOPIC        "connection"
-    #define LWT_CONNECTED    "connected"
-    #define LWT_DISCONNECTED "connection lost"
 
 
     // connect_wlan.cpp
